@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if subject %}
+        {{ subject.title }} Uncle-Engineer-Lab 
+    {% else %}
+        Uncle-Engineer-Lab คอร์สเรียนทั้งหมด
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+            <section id="home" class="video-section js-height-full" style="height: 607px;">
+                    <div class="overlay"></div>
+                    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+                            <source src="{% static "upload/preview.mp4" %}" type="video/mp4">
+                    </video>
+                <div class="slider-bottom">
+                        <span>เพิ่มเติม<i class="fa fa-angle-down"></i></span>
+                    </div>
+            </section>
+    
+
+<section class="section gb nopadtop">
+        <div class="container">
+<h1>
+    {% if subject %}
+        {{ subject.title }} courses
+    {% else %}
+        All courses
+    {% endif %}
+</h1>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box m30">
+                        <i class="flaticon-computer-tool-for-education"></i>
+                        <h4>หมวดหมู่</h4>
+                        <p></p>
+                        <ul id="modules">
+                                <li {% if not subject %}class="selected"{% endif %}>
+                                    <a href="{% url "course_list" %}">All</a>
+                                </li>
+                                {% for s in subjects %}
+                                    <li {% if subject == s %}class="selected"{% endif %}>
+                                        <a href="{% url "course_list_subject" s.slug %}">
+                                            {{ s.title }}
+                                            <br><span>{{ s.total_courses }} courses</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                        </ul>
+                    </div>
+                </div><!-- end col -->
+
+                <div class="col-md-9">
+                    <div class="box m30">
+                        <i class="flaticon-monitor-tablet-and-smartohone"></i>
+                        <h4>คอร์สเรียน</h4>
+                        <p></p>
+                        {% for course in courses %}
+        {% with subject=course.subject %}
+            <h3><a href="{% url "course_detail" course.slug %}">
+            {{ course.title }}</a></h3>
+            <p>
+                <a href="{% url "course_list_subject" subject.slug %}">
+                {{ subject }}</a>.
+                {{ course.total_modules }} modules.
+                Instructor: {{ course.owner.get_full_name }}
+            </p>
+        {% endwith %}
+    {% endfor %}
+                    </div>
+                </div><!-- end col -->
+
+
+            <hr class="invis">
+
+        </div><!-- end container -->
+    </section>
+
+            <section class="section bgcolor1">
+                <div class="container">
+                    <a href="#">
+                    <div class="row callout">
+                        <div class="col-md-4 text-center">
+                            <h3><sup></sup>500บาท</h3>
+                            <h4>ราคาที่คุณจับต้องได้!</h4>
+                        </div><!-- end col -->
+    
+                        <div class="col-md-8">
+                            <p class="lead">ด่วนจำนวนจำกัด! เข้าคอร์สเรียนได้ไม่จำกัด พร้อมติดต่อครูผู้สอนได้ทุกเวลา </p>
+                        </div>
+                    </div><!-- end row -->
+                    </a>
+                </div><!-- end container -->  
+            </section>
+
+            <section class="section db p120">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tagline-message text-center">
+                                <h3>ก้าวไปทุกวันอย่างช้าๆไม่หยุดนิ่ง ซักวันจะถึงเป้าหมายที่วางไว้</h3>
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section><!-- end section -->
+{% endblock %}

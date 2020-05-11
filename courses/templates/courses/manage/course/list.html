@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}คอร์สเรียนของฉัน{% endblock %}
+{% block content %}
+<section class="section db p120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tagline-message page-title text-center">
+                            <h3>คอร์สเรียนของฉัน</h3>
+                            <ul class="breadcrumb">
+                                <li><a href="javascript:void(0)">Uncle Engineer Lab</a></li>
+                                <li class="active">คอร์สเรียนของฉัน</li>
+                            </ul>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+<section class="section gb nopadtop">
+            <div class="container">
+                <div class="boxed boxedp4">
+<div class="module">
+{% for course in object_list %}
+<div class="course-info">
+<h3>{{ course.title }}</h3>
+<p>
+<a href="{% url "course_edit" course.id %}">แก้ไขคอร์ส</a>
+<a href="{% url "course_delete" course.id %}">ลบคอร์ส</a>
+<a href="{% url "course_module_update" course.id %}">แก้ไขบทเรียน</a>
+{% if course.modules.count > 0 %}
+    <a href="{% url "module_content_list" course.modules.first.id %}">จัดการคอนเท็นท์</a>
+{% endif %}
+</p>
+</div>
+{% empty %}<p>คุณยังไม่มีคอร์สเรียนใดๆ</p>
+{% endfor %}
+<p>
+<a href="{% url "course_create" %}" class="button">สร้างคอร์สใหม่</a>
+</p>
+</div>
+                </div><!-- end container -->
+            </div>
+        </section>
+{% endblock %}

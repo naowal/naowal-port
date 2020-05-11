@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block content %}
+
+    <section class="section db p120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tagline-message page-title text-center">
+                            <h3>{{ module.title }}</h3>
+                            <ul class="breadcrumb">
+                                <li><a href="javascript:void(0)">คอร์สเรียน</a></li>
+                                <li class="active">{{ module.title }}</li>
+                            </ul>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+
+<section class="section gb nopadtop">
+            <div class="container">
+                <div class="row">
+                    <div class="box m30">
+                        <i class="flaticon-computer-tool-for-education"></i>
+    <div class="contents">
+        <h3>บทเรียน</h3>
+        <ul id="modules">
+        {% for m in object.modules.all %}
+            <li data-id="{{ m.id }}" {% if m == module %}class="selected"{% endif %}>
+                <a href="{% url "student_course_detail_module" object.id m.id %}">
+                    <span>
+                        บทเรียน  <span class="order">{{ m.order|add:1 }}</span>
+                    </span>
+                    <br>
+                    {{ m.title }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No modules yet.</li>
+        {% endfor %}
+        </ul>
+                </div><!-- end col -->
+
+  <div class="col-md-9">
+                    <div class="box m30">
+                        <i class="flaticon-monitor-tablet-and-smartohone"></i>
+    <div class="module">
+        {% cache 600 module_contents module %}
+            {% for content in module.contents.all %}
+                {% with item=content.item %}
+                    <h2>{{ item.title }}</h2>
+                    {{ item.render }}
+                {% endwith %}
+            {% endfor %}
+        {% endcache %}
+    </div>
+                </div><!-- end container -->
+            </div>
+      </div><!-- end col -->
+                    </div><!-- end row -->
+        </section>
+{% endblock %}

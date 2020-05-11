@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Site Meta -->
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="Naowal Siripatana">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="{% static "images/apple-touch-icon.png" %}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet"> 
+
+
+    <!-- Custom & Default Styles -->
+    <link href="{% static "css/bootstrap.min.css" %}"  rel="stylesheet">
+    <link href="{% static "css/font-awesome.min.css" %}"  rel="stylesheet">
+    <link href="{% static "css/carousel.css" %}"  rel="stylesheet">
+    <link href="{% static "css/animate.css" %}"  rel="stylesheet">
+    <link href="{% static "style.css" %}"  rel="stylesheet">
+    <!-- link href="{% static "css/base.css" %}" rel="stylesheet"> -->
+
+    <!--[if lt IE 9]>
+		<script src="js/vendor/html5shiv.min.js"></script>
+		<script src="js/vendor/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+
+    <!-- LOADER -->
+    <div id="preloader">
+        <img class="preloader" src="{% static "images/loader.gif" %}" alt="">
+    </div><!-- end loader -->
+    <!-- END LOADER -->
+
+
+    <div id="wrapper">
+
+            <header class="header">
+                <div class="topbar clearfix">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="col-md-6 col-sm-6 text-left">
+                                <p>
+                                    <strong><i class="fa fa-phone"></i></strong> +6683 6545315 &nbsp;&nbsp;
+                                    <strong><i class="fa fa-envelope"></i></strong> <a href="mailto:#">loong.wissawakorn@gmail.com</a>
+                                </p>
+                            </div><!-- end left -->
+                            <div class="col-md-6 col-sm-6 hidden-xs text-right">
+                                <div class="social">
+                                    <a class="facebook" href="https://www.facebook.com/UncleEngineer/" data-tooltip="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>              
+                                </div><!-- end social -->
+                            </div><!-- end left -->
+                        </div><!-- end row -->
+                    </div><!-- end container -->
+                </div><!-- end topbar -->
+    
+                <div class="container">
+                    <nav class="navbar navbar-default yamm">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <div class="logo-normal">
+                                <a class="navbar-brand" href="/"><img src="{% static "images/logo.png" %}"  alt=""></a>
+                            </div>
+                        </div>
+    
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/">หน้าแรก</a></li>
+                                <li><a href="{% url "student_registration" %}">สมัครสมาชิก</a></li>
+                                {% if request.user.is_authenticated %}
+                                    <li><a href="{% url "logout" %}">ออกจากระบบ</a></li>
+                                {% else %}
+                                    <li><a href="{% url "login" %}">เข้าสู่ระบบ</a></li>
+                                {% endif %}
+                                <li><a href="/ecommerce" target="_blank">ร้านหนังสือ</a></li>
+                            </ul>
+                        </div>
+                    </nav><!-- end navbar -->
+                </div><!-- end container -->
+            </header>
+    
+     
+            {% block content %}
+            {% endblock %}
+      
+            <div class="copyrights">
+                <div class="container">
+                    <div class="clearfix">
+                        <div class="pull-left">
+                            <div class="cop-logo">
+                                <a href="#"><img src="{% static "images/logo.png" %}" alt=""></a>
+                            </div>
+                        </div>
+    
+                        <div class="pull-right">
+                            <div class="footer-links">
+                                <ul class="list-inline">
+                                    <li>Developed by : <a href="www.naowal.com">Naowal Siripatana</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end container -->
+            </div><!-- end copy -->
+        </div><!-- end wrapper -->
+
+    <!-- jQuery Files -->
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/carousel.js" %}"></script>
+    <script src="{% static "js/animate.js" %}"></script>
+    <script src="{% static "js/custom.js" %}"></script>
+    <!-- VIDEO BG PLUGINS -->
+    <script src="{% static "js/videobg.js" %}"></script>
+    
+</body>
+</html>

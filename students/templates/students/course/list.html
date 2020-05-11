@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}คอร์สเรียนของฉัน{% endblock %}
+
+{% block content %}
+<section class="section db p120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tagline-message page-title text-center">
+                            <h3>คอร์สเรียนของฉัน</h3>
+                            <ul class="breadcrumb">
+                                <li><a href="javascript:void(0)">Uncle Engineer Lap</a></li>
+                                <li class="active">คอร์สเรียนของฉัน</li>
+                            </ul>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+
+
+<section class="section gb nopadtop">
+            <div class="container">
+                <div class="boxed boxedp4">
+    <div class="module">
+        {% for course in object_list %}
+            <div class="course-info">
+                <h3>{{ course.title }}</h3>
+                <p><a href="{% url "student_course_detail" course.id %}">
+                เข้าถึงบทเรียน</a></p>
+            </div>
+        {% empty %}
+            <p>
+                คุณยังไม่เข้าเรียนคอร์สใดๆ
+                <a href="{% url "course_list" %}">ค้นหาคอร์สเรียน</a>
+                เพื่อเข้าเรียน
+            </p>
+        {% endfor %}
+    </div>
+                </div><!-- end container -->
+            </div>
+        </section>
+{% endblock %}

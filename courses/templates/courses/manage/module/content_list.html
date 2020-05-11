@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load course %}
+
+{% block title %}
+    บทเรียน {{ module.order|add:1 }}: {{ module.title }}
+{% endblock %}
+
+{% block content %}
+<section id="home" class="video-section js-height-full" style="height: 607px;">
+                    <div class="overlay"></div>
+                    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+                            <source src="/static/upload/preview.mp4" type="video/mp4">
+                    </video>
+                <div class="slider-bottom">
+                        <span>เพิ่มเติม<i class="fa fa-angle-down"></i></span>
+                    </div>
+            <div id="video_background_video_0" style="z-index: -1; position: absolute; inset: 0px; overflow: hidden;"><video autoplay="" loop="" onended="this.play()" style="position: absolute; top: 0px; left: -45px;" width="1080" height="607"><source src="upload/preview.mp4" type="video/mp4"><source src="upload/preview.webm" type="video/webm"><source src="upload/preview.ogg" type="video/ogg"></video></div></section>
+
+
+<section class="section gb nopadtop">
+        <div class="container">
+{% with course=module.course %}
+
+    <h1>คอรสเรียน "{{ course.title }}"</h1>
+ <div class="row">
+                <div class="col-md-3">
+                    <div class="box m30">
+                        <i class="flaticon-computer-tool-for-education"></i>
+    <div class="contents">
+        <h3>บทเรียน</h3>
+        <ul id="modules">
+            {% for m in course.modules.all %}
+            <li data-id="{{ m.id }}" {% if m == module %}
+            class="selected"{% endif %}>
+                <a href="{% url "module_content_list" m.id %}">
+                <span>
+                    บทเรียน <span class="order">{{ m.order|add:1 }}</span>
+                </span>
+                <br>
+                {{ m.title }}
+                </a>
+            </li>
+            {% empty %}
+            <li>ยังไม่มีบทเรียน</li>
+            {% endfor %}
+        </ul>
+   </div>
+                </div><!-- end col -->
+
+
+        <p><a href="{% url "course_module_update" course.id %}">
+        แก้ไขบทเรียน</a></p>
+    </div>
+
+ <div class="col-md-9">
+                    <div class="box m30">
+                        <i class="flaticon-monitor-tablet-and-smartohone"></i>
+    <div class="module">
+        <h2>บทเรียน {{ module.order|add:1 }}: {{ module.title }}</h2>
+        <h3>เนื้อหาบทเรียน:</h3>
+        <div id="module-contents">
+            {% for content in module.contents.all %}
+            <div data-id="{{ content.id }}">
+                {% with item=content.item %}
+                <p>{{ item }} ({{ item|model_name }})</p>
+                <a href="{% url "module_content_update" module.id item|model_name item.id %}">Edit</a>
+                    <form action="{% url "module_content_delete" content.id %}"
+                    method="post">
+                        <input type="submit" value="Delete">
+                        {% csrf_token %}
+                    </form>
+                {% endwith %}
+            </div>
+            {% empty %}
+            <p>บทเรียนนี้ยังไม่มีเนื้อหา</p>{% endfor %}
+        </div>
+        <h3>เพิ่มเนื้อหาใหม่:</h3>
+        <ul class="content-types">
+            <li><a href="{% url "module_content_create" module.id "text" %}">
+                ข้อความ</a></li>
+            <li><a href="{% url "module_content_create" module.id "image" %}">
+                รูปภาพ</a></li>
+            <li><a href="{% url "module_content_create" module.id "video" %}">
+                วิดิโอ</a></li>
+            <li><a href="{% url "module_content_create" module.id "file" %}">
+                ไฟล์แนบ</a></li>
+        </ul>
+    </div>
+    </div>
+                </div><!-- end col -->
+
+
+            <hr class="invis">
+
+        </div><!-- end container -->
+    </div></section>
+{% endwith %}
+{% endblock %}
+
+{% block domready %}
+$('#modules').sortable({
+    stop: function(event, ui) {
+        modules_order = {};
+        $('#modules').children().each(function(){
+            // update the order field
+            $(this).find('.order').text($(this).index() + 1);
+            // associate the module's id with its order
+            modules_order[$(this).data('id')] = $(this).index();
+        });
+        $.ajax({
+            type: 'POST',
+            url: '{% url "module_order" %}',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+                data: JSON.stringify(modules_order)
+            });
+    }
+});
+
+$('#module-contents').sortable({
+    stop: function(event, ui) {
+        contents_order = {};
+        $('#module-contents').children().each(function(){
+            // associate the module's id with its order
+            contents_order[$(this).data('id')] = $(this).index();
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "content_order" %}',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(contents_order),
+        });
+    }
+});
+{% endblock %}
